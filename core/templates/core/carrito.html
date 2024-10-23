@@ -1,0 +1,44 @@
+<div role="alert">
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="row" colspan="3" class="text-center">CARRITO</th>
+    </tr>
+    <tr>
+      <th scope="col">Nombre</th>
+      <th scope="col">Precio</th>
+      <th scope="col">Cantidad</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% if request.session.carrito.items %}
+  {% for key, value in request.session.carrito.items %}
+    <tr>
+      <td>{{value.nombre}}</td>
+      <td>$ {{value.acumulado}}</td>
+      <td>{{value.cantidad}}
+        <a href="{% url 'Add' value.idServicio %}" class="badge btn btn-dark badge-dark">+</a>
+        <a href="{% url 'Sub' value.idServicio %}" class="badge btn btn-dark badge-dark">-</a>
+      </td>
+    </tr>
+  {% endfor %}
+  {% else %}
+  <tr>
+      <td colspan="3">
+          <div class="alert alert-danger text-center"> Sin Productos </div>
+      </td>
+  </tr>
+  {% endif %}
+    <tr>
+      <th scope="row">Total:</th>
+      <td colspan="2">$ {{total_carrito}}</td>
+    </tr>
+  </tbody>
+</table>
+<div class="d-grid gap-2 col-6 mx-auto">
+<a href="{% url 'CLS' %}" class="btn btn-danger">Limpiar</a>
+<a href="{% url 'guardar_compra' %}" class="btn btn-success">Pagar</a>
+</div>
+<hr>
+</div>
+

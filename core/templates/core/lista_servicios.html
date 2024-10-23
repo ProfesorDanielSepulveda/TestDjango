@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load static%}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>TALLER BODOQUE MOTORES</title>
+    <link rel="stylesheet" href="../../static/core/css/style.css">
+</head>
+<body>
+    <section>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+          <div class="container">
+            <a class="navbar-brand" href="{% url 'vista_admin' %}">
+              <img src="{% static 'core/img/logo.png'%}" alt="logo_wilson" height="50">
+            </a>
+            <a class="h3 text-light" href="{% url 'vista_admin' %}" id="titulo-seccion">Bodoque Motores</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+              aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                {% if user.username == 'admin' %}
+                                    <a class="nav-link" href="{% url 'home' %}">Vista usuario</a>
+                                {% else %}
+                                    </li>
+                                {% endif %}
+                                </li>
+                            </li>  
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'lista_mensajes' %}">Mensajes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'lista_mecanicos' %}">Mecanicos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'lista_servicios' %}">Servicios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'lista_vehiculo' %}">Vehiculos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'lista_categoria' %}">Categoria</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'lista_ventas_admin' %}">Ventas</a>
+                        </li>
+                        <li class="nav-item">
+                            {% if user.username == '' %}
+                                <a href="{% url 'login'%}"><button type="button" class="btn btn-success" style="justify-self: unset;" >Iniciar sesión</button></a>
+                            {% else %}
+                                <a class="nav-link" style="color: antiquewhite; font-weight: bold;">Bienvenido {{user.username }}</a>
+                            </li>
+                                <a href="{% url 'logout' %}"><button type="button" class="btn btn-danger" style="justify-self: unset;">Cerrar sesión</button></a>
+                            {% endif %}
+                            </li>
+                        </li>
+                    </ul>
+                </div>
+          </div>
+        </nav>
+    </section>
+    
+<section>
+<div class="container bg-dark text-light mt-2 mb-2  border border-light" style="padding: 2%;">
+    <h3>Lista de categorías</h3>
+    <table class="table text-light">
+        <thead>
+            <tr>
+                <th>Id servicio</th>
+                <th>Nombre servicio</th>
+                <th>Descripcion servicio</th>
+                <th>Precio servicio</th>
+                <th>Foto servicio</th>
+                <th>Acciones</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ser in servicios %}
+            <tr>
+                <th>{{ ser.idServicio }}</th>
+                <td>{{ ser.nombreServicio }}</td>
+                <td>{{ ser.descripcionServicio }}</td>
+                <td>{{ ser.precioServicio }}</td>
+                <td><a href="{{ ser.imagenServicio.url }}">{{ ser.imagenServicio.url }}</a></td>
+                <td><a href="{% url 'form_mod_servicios' ser.idServicio %}" class="btn btn-primary">Modificar</a></td>
+                <td><a href="{% url 'form_del_servicios' ser.idServicio %}" class="btn btn-danger">Eliminar</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'form_servicios' %}" class="btn btn-success">Nuevo registro</a>
+    <p>&nbsp;</p>
+</div>
+</section>
+
+<footer class="page-footer font-small bg-dark text-light border border-light teal pt-4">
+    <div class="footer-copyright text-center py-3">© 2023</div>
+    <p id="temp" class="footer-copyright text-center py-3"></p>
+        <script>
+            const apiKey = 'Vn6VWWWnYkSoJyKpAOeymbuiycyGJEvA';
+            const city = 'Santiago';
+
+            fetch(`http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${city}`)
+                .then(response => response.json())
+                .then(data => {
+                    const locationKey = data[0].Key;
+
+                    fetch(`http://dataservice.accuweather.com/currentconditions/v1/${locationKey}?apikey=${apiKey}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const temp = data[0].Temperature.Metric.Value;
+                            document.getElementById('temp').textContent = `Clima actual de Santiago: ${temp} °C`;
+                        })
+                        .catch(error => {
+                            console.error('Error en la solicitud a la API', error);
+                        });
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud a la API', error);
+                });
+        </script>
+</footer>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+
+</html>

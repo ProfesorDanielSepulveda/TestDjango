@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static%}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Taller Bodoque Motores</title>
+    <link rel="stylesheet" href="../static/core/css/style.css" />
+</head>
+
+<body>
+<section>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'vista_admin' %}">
+          <img src="{% static 'core/img/logo.png'%}" alt="logo_wilson" height="50">
+        </a>
+        <a class="h3 text-light" href="{% url 'vista_admin' %}" id="titulo-seccion">Bodoque Motores</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            {% if user.username == 'admin' %}
+                                <a class="nav-link" href="{% url 'home' %}">Vista usuario</a>
+                            {% else %}
+                                </li>
+                            {% endif %}
+                            </li>
+                        </li>  
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'lista_mensajes' %}">Mensajes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'lista_mecanicos' %}">Mecanicos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'lista_servicios' %}">Servicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'lista_vehiculo' %}">Vehiculos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'lista_categoria' %}">Categoria</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'lista_ventas_admin' %}">Ventas</a>
+                    </li>
+                    <li class="nav-item">
+                        {% if user.username == '' %}
+                            <a href="{% url 'login'%}"><button type="button" class="btn btn-success" style="justify-self: unset;" >Iniciar sesión</button></a>
+                        {% else %}
+                            <a class="nav-link" style="color: antiquewhite; font-weight: bold;">Bienvenido {{user.username }}</a>
+                        </li>
+                            <a href="{% url 'logout' %}"><button type="button" class="btn btn-danger" style="justify-self: unset;">Cerrar sesión</button></a>
+                        {% endif %}
+                        </li>
+                    </li>
+                </ul>
+            </div>
+      </div>
+    </nav>
+</section>
+<section>   
+    <div class="container bg-dark text-light mt-2 mb-2  border border-light" style="padding: 2%;">
+        <h1 class="text-center mb-4">Conoce nuestros servicios!</h1>
+        <center>
+            
+            <div id="carouselExampleCaptions" class="carousel slide  w-100" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                    {% for ser in servicios %}
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to={{ forloop.counter }}
+                        aria-label="Slide {{ forloop.counter|add:1 }}"></button>
+                    {% endfor %}
+                </div>
+            
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="../../static/core/img/Taller mecanico.jpg" class="d-block w-75"  alt="servicios">
+                        <div class="carousel-caption d-none d-md-block">
+                            <a href="{% url 'servicios' %}"class="h5 text-light"
+                                style="text-shadow: 2px 2px 4px #000;">¡Nuestros servicios!</a>
+                            <p style="text-shadow: 2px 2px 4px #000;">En wilson motores tenemos los siguientes servicios disponibles para ti</p>
+                    </div>
+                </div>
+                    {% for ser in servicios %}
+                    <div class="carousel-item">
+                        <img src="{{ ser.imagenServicio.url }}" class="d-block w-75" alt="imagen_producto">
+                        <div class="carousel-caption d-none d-md-block">
+                            <a href="{% url 'servicios' %}" class="h5 text-light" style="text-shadow: 2px 2px 4px #000;">{{ ser.nombreServicio }}</a>
+                            <p style="text-shadow: 2px 2px 4px #000;">{{ ser.descripcionServicio }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                  
+            </div>
+        </center>
+    </div>
+</section>
+
+    <section class="container bg-dark text-light mt-2 mb-2  border border-light" style="padding: 2%;">
+        <div class="container text-center">
+            <h2 id="titulo-seccion">¡Nuestros Mecánicos más destacados!</h2>
+            <br>
+            <div class="card-group">
+                <div class="card">
+                    <img src="{%static 'core/img/MarioHugo.png'%}" class="card-img-top" height="300px">
+                    <div class="card-body text-dark" >
+                        <h5 class="card-title" >Mario Hugo</h5>
+                        <p class="card-text">Con 5 años de experiencia, esta joven promesa es un genio automotriz</p>
+                        <p class="card-text">
+                            <small class="text-muted">Último trabajo hace 3 días</small>
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">Total trabajos realizados: 3</small>
+                        </p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="{%static 'core/img/Juanin.jpg'%}" class="card-img-top" height="300px">
+                    <div class="card-body text-dark" >
+                        <h5 class="card-title" >Juanin Juan Harry</h5>
+                        <p class="card-text">1 año de experiencia, el futuro de la mecánica automotriz del país</p>
+                        <p class="card-text">
+                            <small class="text-muted">Último trabajo hace 5 segundos</small>
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">Total trabajos realizados: 58.635</small>
+                        </p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="{%static 'core/img/Tulio.jpg'%}"card-img-top" height="300px">
+                    <div class="card-body text-dark" >
+                        <h5 class="card-title">Tulio Triviño</h5>
+                        <p class="card-text">Co-fundador de la empresa, el mejor amigo de bodoque.</p>
+                        <p class="card-text">
+                            <small class="text-muted">Último trabajo hoy</small>
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">Total trabajos realizados: 0</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container bg-dark text-light mt-2 mb-2  border border-light" style="padding: 2%;">
+        <div class='row'>
+            <div class='col-8'>
+                <div class='container-fluid p-0'>
+                    <div class='row'>
+                        <div class='col'>
+                            <h2>Sobre Nosotros</h2>
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='col'>
+                            <p><i class='fa fa-arrow-right'></i> Nuestra Misión:</p>
+                        </div>
+                        <div class='row'>
+                            <div class='col'>
+                                <p style="font-size: 120%;">En Bodoque Motors, nuestra meta principal es ofrecer los
+                                    mejores servicios y de alta
+                                    calidad a cada uno de nuestros clientes.
+                                    Nos esforzamos por proporcionar reparaciones y mantenimiento automotriz confiables y
+                                    eficientes para garantizar que su vehículo
+                                    esté en las mejores condiciones posibles.
+                                    Además, nos comprometemos a ser transparentes y honestos en todo momento con
+                                    nuestros clientes. Queremos asegurarnos de que
+                                    nuestros clientes comprendan plenamente los servicios que se realizarán en su
+                                    vehículo, por qué se necesitan y cómo los
+                                    llevaremos a cabo.
+                                    Otro de nuestros objetivos es garantizar la satisfacción del cliente. Nos esforzamos
+                                    por hacer todo lo posible para que nuestros clientes se sientan satisfechos con
+                                    nuestros servicios, desde el momento en que ingresan a nuestro taller hasta que
+                                    recogen su vehículo.
+
+                                    Por último, en Bodoque Motors nos enfocamos en la educación continua de nuestro
+                                    personal. Nos aseguramos de que nuestros mecánicos estén capacitados en las últimas
+                                    tecnologías y técnicas de reparación automotriz, para poder brindar el mejor
+                                    servicio posible a nuestros clientes.
+
+                                    En resumen, nuestros objetivos son proporcionar un servicio excepcional y de alta
+                                    calidad, ser transparentes y honestos con nuestros clientes, garantizar la
+                                    satisfacción del cliente y seguir educando a nuestro personal para mantenernos
+                                    actualizados y ofrecer los mejores servicios posibles... </p>
+                            </div>
+                            <a href="/">
+                                <button type="button" class="btn btn-light">Leer más</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='col-4 '>
+                <img src="{% static 'core/img/bodoque.jpg' %}" class='rounded-circle border border-light' alt='wilson_chamorro'
+                    style="width: 100%;">
+            </div>
+        </div>
+    </div>
+    <footer class="page-footer font-small bg-dark text-light border border-light teal pt-4">
+        <div class="footer-copyright text-center py-3">© 2023</div>
+        <p id="temp" class="footer-copyright text-center py-3"></p>
+            <script>
+                const apiKey = 'Vn6VWWWnYkSoJyKpAOeymbuiycyGJEvA';
+                const city = 'Santiago';
+
+                fetch(`http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${city}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const locationKey = data[0].Key;
+
+                        fetch(`http://dataservice.accuweather.com/currentconditions/v1/${locationKey}?apikey=${apiKey}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                const temp = data[0].Temperature.Metric.Value;
+                                document.getElementById('temp').textContent = `Clima actual de Santiago: ${temp} °C`;
+                            })
+                            .catch(error => {
+                                console.error('Error en la solicitud a la API', error);
+                            });
+                    })
+                    .catch(error => {
+                        console.error('Error en la solicitud a la API', error);
+                    });
+            </script>
+    </footer>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+
+</html>
